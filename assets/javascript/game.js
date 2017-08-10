@@ -18,16 +18,6 @@ var gameRules = {
 	playerPick: "",
 	getWord: [],
 
-	// html alterations
-	win_counter: document.getElementById("wins-div"),
-	loss_counter: document.getElementById("wins-div"),
-	guess_left: document.getElementById("guess-div"),
-
-	// functions
-	// newGame: function() {
-
-	// }
-
 	newGame: function(){
 
 	 	this.getWord = this.wordArray[Math.floor(Math.random() * this.wordArray.length)];
@@ -41,6 +31,9 @@ var gameRules = {
 	 	blanksSpaces = this.placeHolders.join(" ");
 
 	 	document.querySelector("#word-blanks").innerHTML = "<div>" + blanksSpaces + "<div>";
+	 	document.querySelector("#guess-div").innerHTML =  "8" ;
+	 	document.querySelector("#wins-div").innerHTML =  "0" ;
+	 	document.querySelector("#loss-div").innerHTML =  "0" ;
 	 }
 
 };
@@ -70,15 +63,18 @@ var gameRules = {
 				// end for i < pW
 
 				if (gameRules.placeHolders.indexOf(gameRules.playerPick) === -1) {
+					
 					gameRules.guessLeft--;
+					document.querySelector("#guess-div").innerHTML =  gameRules.guessLeft ;
 				}
 				// end if pP != guessed
 
 				blanksSpaces = gameRules.placeHolders.join(" ");
 				document.querySelector("#word-blanks").innerHTML = "<div>" + blanksSpaces + "<div>";
 
-				if (blanksSpaces == gameRules.pickedWord) {
+				if (blanksSpaces === gameRules.pickedWord) {
 					document.querySelector("#game-over").innerHTML = "<div>" + "You Win!" + "<div>";
+					gameRules.wins++
 
 				}
 
@@ -95,6 +91,7 @@ var gameRules = {
 
 	else{
 		document.querySelector("#game-over").innerHTML = "<div>  Game Over!  <div>";
+		gameRules.losses++
 
 	}
 
