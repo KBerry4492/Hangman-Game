@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hangman</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	
+
+
+</head>
+<body>
+
+<div class="title">
+<!-- title  -->
+<img src="assets/images/tron-logo-2.jpg">
+<br>
+ Hangman Game
+
+</div>
+
+<div>
+<!-- main content -->
+	
+	<!-- column one -->
+	<div id="colOne">
+	<!-- images -->
+
+	<img  id="hung-man" src="assets/images/tron_user.jpg" alt="Sam Flynn, from http://clothesonfilm.com/tron-legacy-light-suit-costume/15850/">
+
+	<span id="game-over"></span>
+		
+	</div>
+	
+	<!-- column two -->
+	<div id="colTwo">
+	
+	Press any key to get started.
+
+	<br>
+
+	<!-- <br>
+	<div id="reset-button"> Press to Reset. </div>
+	<br> -->
+
+	<br>
+
+	Wins: <span id="wins-div"></span>
+	<br>
+	<br>
+	Losses: <span id="loss-div"></span>
+
+
+	<br>
+
+	<!-- <br>
+	<span class="border-line"></span>
+	<br> -->
+
+	<br>
+	
+	Hint:
+	<span id="word-blanks"></span>
+
+	<br>
+	<br>
+
+	Guesses Remaining: <span id="guess-div">8</span>
+
+	<br>
+	<br>
+
+	Guessed Letters:
+	<br>
+	<br>
+	<span id="blank-spots"></span>
+		
+	</div>
+
+</div>
+
+<script src="assets/javascript/game.js"></script> 
+
+</body>
+</html>

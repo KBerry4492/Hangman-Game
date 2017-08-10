@@ -1,0 +1,70 @@
+body{
+	background-image: url("../images/tronBG.jpg");
+	background-size: 100%;
+	background-repeat: auto;
+	background-position: left top;
+	color: #fff;
+}
+.title{
+	font-size: 36px;
+	text-align: center;
+	margin:10px 20%;
+	padding: 10px 5px;
+	background-color: black; 
+	border: solid 1px #13F7FD;
+}
+
+.title img{
+	width: 100%;
+}
+
+#colOne{
+	background-color: black; 
+	border: solid 1px #13F7FD;
+	float: left;
+	margin-left: 20%;
+	width: 30%;
+	padding: 10px;
+	text-align: center;
+
+}
+
+/*.border-line{
+	border-top: dashed 1px #13F7FD;
+	width: 100%;
+	height: 3px;
+}*/
+
+#hung-man{
+	width: 100%;
+}
+
+#game-over{
+	font-size: 32px;
+	
+}
+
+#colTwo{
+	background-color: black; 
+	border: solid 1px #13F7FD;
+	float: right;
+	margin-right: 20%;
+	padding: 30px 20px;
+	width: 20%;
+}
+
+#reset-button{
+	margin: 2px 5%;
+	padding: 5px;
+	border: solid 1px #13F7FD;
+	text-align: center;
+}
+#reset-button:active{
+	background-color: #13F7FD
+	color: black;
+	}
+
+#blank-spots{
+	width:80%;
+	word-wrap: break-word;
+}
