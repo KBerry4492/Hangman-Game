@@ -15,10 +15,24 @@ var gameRules = {
 	
 	// placeholders?
 	guessedLetters: [],
+	blanksSpaces: [],
 	playerPick: "",
 	getWord: [],
+	wordCheck: [],
+	wordCheckTwo: [],
 
 	newGame: function(){
+
+		this.guessLeft = 8;
+		this.guessWrong = [];
+		this.placeHolders = [];
+		this.pickedWord = [];
+		this.guessedLetters = [];
+		this.playerPick = "";
+		this.getWord = [];
+		this.wordCheck = [];
+		this.wordCheckTwo = [];
+		this.blanksSpaces = [];
 
 	 	this.getWord = this.wordArray[Math.floor(Math.random() * this.wordArray.length)];
 
@@ -34,118 +48,102 @@ var gameRules = {
 	 	document.querySelector("#guess-div").innerHTML =  "8" ;
 	 	document.querySelector("#wins-div").innerHTML =  "0" ;
 	 	document.querySelector("#loss-div").innerHTML =  "0" ;
+	 	document.querySelector("#game-over").innerHTML = "";
+	 	document.querySelector("#blank-spots").innerHTML = "<div>" + this.guessedLetters + "<div>";
+	 	document.querySelector("#user-pic").innerHTML = "<img  id=\"hung-man\" src=\"assets/images/tron_user.jpg\" alt=\"Game Over\">";
+	 },
+
+	
+	 keyPress: function(){
+
+	 	if (this.guessLeft == 0) {
+				document.querySelector("#game-over").innerHTML = "<div>" + "You Lose!" + "<div>";
+				document.querySelector("#user-pic").innerHTML = "<img  id=\"hung-man\" src=\"assets/images/gameOver.png\" alt=\"Game Over\">";
+				this.losses ++;
+				document.querySelector("#loss-div").innerHTML =  this.losses ;
+				// If you keep pressing buttons, you keep losing. its a feature, not a bug :P
+			}
+
+
+	 	else if (this.guessedLetters.indexOf(this.playerPick) === -1) {
+	 		// if the letter pressed is not in guessedLetters array
+
+			this.guessedLetters.push(this.playerPick.toLowerCase());
+			//add it to the array 
+
+			//Excellent, it will take Uppercase inputs as well.  prints them uppercase too.  Counts pressing the Shift / CAPS LOCK key against you though.
+			//Fair enough, its not a letter.
+			for (var i = 0; i < this.pickedWord.length; i++) {
+				// for the length of the picked word
+
+				if (this.playerPick.toLowerCase() ===  this.pickedWord[i]) {
+					//if the letter pressed is in that word
+
+					this.placeHolders[i] =  this.playerPick;
+					//replace the corrosponding blank spot with that letter
+
+				}// end if 
+
+				this.wordCheck[i] = this.pickedWord[i]
+				
+			}// end for 
+		
+
+			if (this.placeHolders.indexOf(this.playerPick) === -1) {
+				//if after the above, the letter picked is not in the placeholder array
+				
+				this.guessLeft--;
+				//depreciate guessLeft
+
+				document.querySelector("#guess-div").innerHTML =  this.guessLeft ;
+				//and write it to the HTMl
+
+			}// end if pP != guessed
+
+			this.wordCheckTwo = this.placeHolders;
+
+			this.blanksSpaces = this.placeHolders.join(" ");
+
+			document.querySelector("#word-blanks").innerHTML = "<div>" + this.blanksSpaces + "<div>";
+
+
+		}// end if pP not in gL
+
+		if (this.wordCheck.toString() == this.wordCheckTwo.toString()) {
+				document.querySelector("#game-over").innerHTML = "<div>" + "You Win!" + "<div>";
+				this.wins++
+				document.querySelector("#wins-div").innerHTML =  this.wins ;
+				// you also (should) keep winning... that is a bug...
+				return this.wins;
+			}//end winning
+
+		
+
+	 	document.querySelector("#blank-spots").innerHTML = "<div>" + gameRules.guessedLetters + "<div>";
 	 }
 
-};
+};//end object
 
-	if (gameRules.guessLeft > 0) {
+	
 
-		document.onkeyup = function(event) {
-			gameRules.playerPick = event.key;
-			// return this.playerPick;
-			
-			console.log(gameRules.guessedLetters);
+document.onkeyup = function(event) {
+	gameRules.playerPick = event.key;
+	// return this.playerPick;
+	
+	console.log("wordCheck");
+	console.log(gameRules.wordCheck);
+	console.log("wordCheckTwo");
+	console.log(gameRules.wordCheckTwo);
 
-			if (gameRules.guessedLetters.indexOf(gameRules.playerPick) === -1) {
+	gameRules.keyPress();
 
-				gameRules.guessedLetters.push(gameRules.playerPick);
-				gameRules.guessedLetters.join(" ");
+}// end onkeyup
 
-				for (var i = 0; i < gameRules.pickedWord.length; i++) {
-					if (gameRules.playerPick ===  gameRules.pickedWord[i]) {
-						gameRules.placeHolders[i] =  gameRules.playerPick;
-					}
-					// end if pp === i
-					
-				}
+	var resetGame = document.querySelector("#reset-button");
 
-				console.log(gameRules.placeHolders)
-				// end for i < pW
-
-				if (gameRules.placeHolders.indexOf(gameRules.playerPick) === -1) {
-					
-					gameRules.guessLeft--;
-					document.querySelector("#guess-div").innerHTML =  gameRules.guessLeft ;
-				}
-				// end if pP != guessed
-
-				blanksSpaces = gameRules.placeHolders.join(" ");
-				document.querySelector("#word-blanks").innerHTML = "<div>" + blanksSpaces + "<div>";
-
-				if (blanksSpaces === gameRules.pickedWord) {
-					document.querySelector("#game-over").innerHTML = "<div>" + "You Win!" + "<div>";
-					gameRules.wins++
-
-				}
-
-			}
-			// end if pP not in gL
-
-		 	document.querySelector("#blank-spots").innerHTML = "<div>" + gameRules.guessedLetters + "<div>";
-		 	console.log(gameRules.guessLeft);
-		}
-		// end onkeyup
-
-	}
-	// end if not lost
-
-	else{
-		document.querySelector("#game-over").innerHTML = "<div>  Game Over!  <div>";
-		gameRules.losses++
-
-	}
-
-
-
-	// document.querySelector("#reset-button") = .on("click", function()){
-	// 	gameRules.newGame();
-	// }
-
+	resetGame.addEventListener ("click", function() {
+  		gameRules.newGame();
+	});
 // end of gameRules
 
 gameRules.newGame();
-
-
-console.log(gameRules.wordArray);
-console.log(gameRules.getWord);
-console.log(gameRules.placeHolders);
-
-
-//object gameRules
-//var guessLeft = 13;
-//var guessWrong = [];
-//var wordArray = ["", "", "", "", "", "", ""];
-//var emptyArray = [];
-// var getWord = wordAray[Math.random]
-// var playerPick = event.key
-// pickedLEtter = letterArray[Math.floor(Math.random() * letterArray.length)];
-
-
-
-// if (playerPick === getWord
-
-// for i i < getWord.length i++
-
-// { append "_" to emptyArray}
-
-// var wordLength = getWord.length
-
-// on event.key 
-
-
-// if playerPick.toLowerCase() == getWord[-1] && ==guessWrong[-1]
-// 	guessLeft --
-// apppend playerPick to guessWrong 
-
-
-//else if 
-// for getWord.length
-// check playerPick.toLowerCase() against getWord[i]
-	// if playerPick === getWord[i]
-	// set emptyArray[i] to playerPick
-	//
-// if emptyArray[] === getWord
-//  You win!
-
-// if guessLeft == 0
-//  You Lose
