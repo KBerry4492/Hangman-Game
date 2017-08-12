@@ -18,11 +18,13 @@ var gameRules = {
 	blanksSpaces: [],
 	playerPick: "",
 	getWord: [],
-	wordCheck: [],
+	wordCheck: ["start"],
 	wordCheckTwo: [],
+	gameWon: false,
 
 	newGame: function(){
 
+		this.gameWon = false;
 		this.guessLeft = 8;
 		this.guessWrong = [];
 		this.placeHolders = [];
@@ -46,8 +48,6 @@ var gameRules = {
 
 	 	document.querySelector("#word-blanks").innerHTML = "<div>" + blanksSpaces + "<div>";
 	 	document.querySelector("#guess-div").innerHTML =  "8" ;
-	 	document.querySelector("#wins-div").innerHTML =  "0" ;
-	 	document.querySelector("#loss-div").innerHTML =  "0" ;
 	 	document.querySelector("#game-over").innerHTML = "";
 	 	document.querySelector("#blank-spots").innerHTML = "<div>" + this.guessedLetters + "<div>";
 	 	document.querySelector("#user-pic").innerHTML = "<img  id=\"hung-man\" src=\"assets/images/tron_user.jpg\" alt=\"Game Over\">";
@@ -56,16 +56,8 @@ var gameRules = {
 	
 	 keyPress: function(){
 
-	 	if (this.guessLeft == 0) {
-				document.querySelector("#game-over").innerHTML = "<div>" + "You Lose!" + "<div>";
-				document.querySelector("#user-pic").innerHTML = "<img  id=\"hung-man\" src=\"assets/images/gameOver.png\" alt=\"Game Over\">";
-				this.losses ++;
-				document.querySelector("#loss-div").innerHTML =  this.losses ;
-				// If you keep pressing buttons, you keep losing. its a feature, not a bug :P
-			}
 
-
-	 	else if (this.guessedLetters.indexOf(this.playerPick) === -1) {
+	 	if (this.guessedLetters.indexOf(this.playerPick) === -1 ) {
 	 		// if the letter pressed is not in guessedLetters array
 
 			this.guessedLetters.push(this.playerPick.toLowerCase());
@@ -89,7 +81,7 @@ var gameRules = {
 			}// end for 
 		
 
-			if (this.placeHolders.indexOf(this.playerPick) === -1) {
+			if (this.placeHolders.indexOf(this.playerPick) === -1  && gameRules.gameWon != true) {
 				//if after the above, the letter picked is not in the placeholder array
 				
 				this.guessLeft--;
@@ -105,37 +97,62 @@ var gameRules = {
 			this.blanksSpaces = this.placeHolders.join(" ");
 
 			document.querySelector("#word-blanks").innerHTML = "<div>" + this.blanksSpaces + "<div>";
-
-
-		}// end if pP not in gL
-
-		if (this.wordCheck.toString() == this.wordCheckTwo.toString()) {
-				document.querySelector("#game-over").innerHTML = "<div>" + "You Win!" + "<div>";
-				this.wins++
-				document.querySelector("#wins-div").innerHTML =  this.wins ;
-				// you also (should) keep winning... that is a bug...
-				return this.wins;
-			}//end winning
-
 		
+		}// end if pP not in gL		
 
 	 	document.querySelector("#blank-spots").innerHTML = "<div>" + gameRules.guessedLetters + "<div>";
-	 }
+
+	 	if (this.wordCheck.toString() == this.wordCheckTwo.toString() && this.gameWon === false) {
+		
+			document.querySelector("#game-over").innerHTML = "<div>" + "You Win!" + "<div>";
+			document.querySelector("#user-pic").innerHTML = "<img  id=\"hung-man\" src=\"assets/images/tron_winner.jpg\" alt=\"Game Over\">";
+			this.wins++
+			document.querySelector("#wins-div").innerHTML =  this.wins ;
+			this.gameWon = true;
+			// you also (should) keep winning... that is a bug...
+
+		
+			}//end winning
+		if (this.guessLeft == 0) {
+			this.losses ++;
+		}
+
+	 }//end keyPress function
 
 };//end object
 
-	
+document.querySelector("#wins-div").innerHTML =  "0" ;
+document.querySelector("#loss-div").innerHTML =  "0" ;
+
 
 document.onkeyup = function(event) {
+
+	var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 	gameRules.playerPick = event.key;
 	// return this.playerPick;
-	
+
+	if(alphabet.indexOf(gameRules.playerPick) === -1){
+		alert("Press a letter.")		
+	}
+
+	else{
+		if (gameRules.guessLeft == 0 && gameRules.gameWon != true) {
+			document.querySelector("#game-over").innerHTML = "<div>" + "You Lose!" + "<div>";
+			document.querySelector("#user-pic").innerHTML = "<img  id=\"hung-man\" src=\"assets/images/gameOver.png\" alt=\"Game Over\">";
+			document.querySelector("#loss-div").innerHTML =  gameRules.losses ;
+			// If you keep pressing buttons, you keep losing. its a feature, not a bug :P
+
+			}
+		
+		else{
+
+			gameRules.keyPress();
+		}
+	}
 	console.log("wordCheck");
 	console.log(gameRules.wordCheck);
 	console.log("wordCheckTwo");
 	console.log(gameRules.wordCheckTwo);
-
-	gameRules.keyPress();
 
 }// end onkeyup
 
